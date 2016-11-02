@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+
 let kBaseUrlString = "https://github.com/login/oauth"
 
 typealias GitHubAuthCompletion = (Bool) -> ()
@@ -103,7 +105,7 @@ class GithubService {
             parameterString += "&\(key)=\(value)"
         }
         
-        if let requestURL = URL(string: "\(kBaseUrlString)authorize?client_id=\(kGitHubClientId)\(parameterString)") {
+        if let requestURL = URL(string: "\(kBaseUrlString)/authorize?client_id=\(kGitHubClientId)\(parameterString)") {
             print(requestURL.absoluteString)
             
             UIApplication.shared.open(requestURL)
@@ -158,13 +160,14 @@ class GithubService {
             
             let code = try codeFrom(url: url)
             
-            let requestString = "\(kBaseUrlString)/access_token?client_id=\(kGitHubClientId)&client_secret\(kGitHubClientSecret)&code=\(code)"
+            let requestString = "\(kBaseUrlString)/access_token?client_id=\(kGitHubClientId)&client_secret=\(kGitHubClientSecret)&code=\(code)"
             
             if let requestURL = URL(string: requestString) {
                 
                 let session = URLSession(configuration: .ephemeral)
                 
                 session.dataTask(with: requestURL, completionHandler: { (data, response, error) in
+                    print("PRINT DATA")
                     print(data)
                     print("RESPONSE: \(response)")
                     print(error)
@@ -178,12 +181,15 @@ class GithubService {
                         if let token = self.accessTokenFrom(dataString) {
                             let success = UserDefaults.standard.save(accessToken: token)
                             
+                            print("Coreys Token:\(token)")
+                            
                             returnToMainWith(success: success)
                         }
                         
                         
                     } else {
                         returnToMainWith(success: false)
+                        
                     }
                 
                 

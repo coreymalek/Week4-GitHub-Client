@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let authController = self.authController, let homeController = self.homeController {
                 
                 authController.dismissAuthController()
-                
+                homeController.update()
             }
             
         
@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func checkAuthStatus() {
-        if let token = UserDefaults.standard.getAccessToken() {    // what does 'standard' do?
+        if let token = UserDefaults.standard.getAccessToken() {
             print(token)
             
         } else {

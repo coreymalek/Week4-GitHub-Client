@@ -8,17 +8,33 @@
 
 import UIKit
 
-class HomeViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource {
+class HomeViewController: UIViewController, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate {
 
     @IBOutlet weak var repoSearch: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
+    
+    
+    
+    let customTransition = CustomTransition()
     
     var repositoryList = [Repository]() {
         didSet {
             tableView.reloadData()
         }
     }
+    
+    
+    
+    //MARK: functions that conform to stated protocols
+    
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        return self.customTransition
+        
+    }
+    
     
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -30,16 +46,18 @@ class HomeViewController: UIViewController, UISearchBarDelegate, UITableViewData
         
     }
     
+    
+    
+    
+    //MARK: override functions
 
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = self
-        self.searchBar.delegate = self
-
-        
+        self.tableView.delegate = self
+        self.repoSearch.delegate = self
+        update()
     }
 
     
@@ -51,17 +69,43 @@ class HomeViewController: UIViewController, UISearchBarDelegate, UITableViewData
     }
     
     
+    
+    
+    //MARK: update function
+    
     func update() {
         
         GithubService.shared.fetchRepos { (repositories) in
             if let repositories = repositories {
-                for repository in repositories {
-                    print(repository.name)
-                }
+                self.repositoryList = repositories
             }
             
-            }
         }
+    }
+    
+    
+    
+    
+    //MARK: segue function
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if segue.identifier == RepoDetialViewController.identifier {
+            
+            if let destinationController = segue.destination as? RepoDetialViewController {
+                
+                destinationController.transitioningDelegate = self
+                
+            }
+            
+        }
+    }
+    
+    
+    
+    
+    //MARK: tableView functions
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -69,15 +113,27 @@ class HomeViewController: UIViewController, UISearchBarDelegate, UITableViewData
     }
     
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "repositoryListCell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "repositoryList")
         
         cell?.textLabel?.text = repositoryList[indexPath.row].name
         cell?.detailTextLabel?.text = repositoryList[indexPath.row].description
+        
+        return cell!
     }
     
     
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: RepoDetialViewController.identifier, sender: nil)
     }
+    
+    
+    
+    
+    
+}
     
 
 
