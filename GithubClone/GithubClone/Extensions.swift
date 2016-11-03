@@ -10,7 +10,7 @@ import UIKit
 
 extension UIResponder {
     
-    static var identifier: String {
+    class func identifier() -> String {
         return String(describing: self)
     }
     

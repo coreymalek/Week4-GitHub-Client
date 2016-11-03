@@ -49,15 +49,23 @@ class HomeViewController: UIViewController, UISearchBarDelegate, UITableViewData
     
     
     
+    
+    
     //MARK: override functions
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.repoSearch.delegate = self
+        
+        let nib = UINib(nibName: "RepoDetailTableViewCell", bundle: nil)
+        self.tableView.register(nib, forCellReuseIdentifier: RepoDetailTableViewCell.identifier())
+        
         update()
+        
     }
 
     
@@ -91,7 +99,7 @@ class HomeViewController: UIViewController, UISearchBarDelegate, UITableViewData
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
-        if segue.identifier == RepoDetialViewController.identifier {
+        if segue.identifier == RepoDetialViewController.identifier() {
             
             if let destinationController = segue.destination as? RepoDetialViewController {
                 
@@ -115,18 +123,25 @@ class HomeViewController: UIViewController, UISearchBarDelegate, UITableViewData
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "repositoryList")
         
-        cell?.textLabel?.text = repositoryList[indexPath.row].name
-        cell?.detailTextLabel?.text = repositoryList[indexPath.row].description
+//        let cell = tableView.dequeueReusableCell(withIdentifier: RepoDetailTableViewCell.identifier(), for: indexPath) as? RepoDetailTableViewCell
         
-        return cell!
+        let cell = tableView.dequeueReusableCell(withIdentifier: RepoDetailTableViewCell.identifier()) as! RepoDetailTableViewCell
+//        
+//        cell.repoName.text = repositoryList[indexPath.row].name
+//        
+//        cell.repoDescription.text = repositoryList[indexPath.row].description
+//
+        cell.textLabel?.text = repositoryList[indexPath.row].name
+        cell.detailTextLabel?.text = repositoryList[indexPath.row].description
+//
+        return cell
     }
     
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: RepoDetialViewController.identifier, sender: nil)
+        self.performSegue(withIdentifier: RepoDetialViewController.identifier(), sender: nil)
     }
     
     

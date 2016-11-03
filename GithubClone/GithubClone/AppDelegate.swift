@@ -54,12 +54,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let storyboard = homeViewController.storyboard {
                 
                 
-                if let authViewController = storyboard.instantiateViewController(withIdentifier: AuthViewController.identifier) as? AuthViewController {
+                if let authViewController = storyboard.instantiateViewController(withIdentifier: AuthViewController.identifier()) as? AuthViewController {
                     
                     
                     homeViewController.addChildViewController(authViewController)
                     homeViewController.view.addSubview(authViewController.view)
-                    
                     authViewController.didMove(toParentViewController: homeViewController)
                     
                     self.authController = authViewController

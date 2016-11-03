@@ -10,10 +10,19 @@ import UIKit
 
 class RepoDetialViewController: UIViewController {
 
+    
+    @IBAction func backToHomeView(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+      
+    
     }
-
- 
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+    }
 }

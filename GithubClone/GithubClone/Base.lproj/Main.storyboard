@@ -54,7 +54,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lzg-rF-OmD">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <searchBar key="tableHeaderView" contentMode="redraw" id="ZgI-VV-Cg4">
-                                    <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </searchBar>
@@ -63,7 +63,7 @@
                                         <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3MX-yW-yCD" id="KVU-9b-uFx">
-                                            <frame key="frameInset" width="375" height="44"/>
+                                            <frame key="frameInset" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -81,7 +81,7 @@
                     <connections>
                         <outlet property="repoSearch" destination="ZgI-VV-Cg4" id="uWn-5f-exu"/>
                         <outlet property="tableView" destination="lzg-rF-OmD" id="u1L-Qc-hUy"/>
-                        <segue destination="wZC-7X-yfV" kind="presentation" identifier="RepoDetailViewController" id="lTC-zg-gcA"/>
+                        <segue destination="wZC-7X-yfV" kind="presentation" identifier="RepoDetialViewController" id="lTC-zg-gcA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aV8-Or-WvX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -99,7 +99,22 @@
                     <view key="view" contentMode="scaleToFill" id="Rnq-rZ-2QH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xdJ-xC-uhD">
+                                <state key="normal" title="Back">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="backToHomeView:" destination="wZC-7X-yfV" eventType="touchUpInside" id="gOn-2j-K9j"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="xdJ-xC-uhD" firstAttribute="leading" secondItem="Rnq-rZ-2QH" secondAttribute="leading" constant="8" id="Mh6-3l-p4J"/>
+                            <constraint firstItem="xdJ-xC-uhD" firstAttribute="top" secondItem="kEI-xR-4h0" secondAttribute="bottom" constant="8" id="exO-K7-GGc"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sYc-GZ-66Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
