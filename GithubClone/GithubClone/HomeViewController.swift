@@ -41,15 +41,11 @@ class HomeViewController: UIViewController, UISearchBarDelegate, UITableViewData
         
         repositoryList = repositoryList.filter { (repository) -> Bool in
             return repository.name.contains(searchBar.text!)
-        
+
         }
         
     }
-    
-    
-    
-    
-    
+
     
     //MARK: override functions
 
@@ -63,6 +59,7 @@ class HomeViewController: UIViewController, UISearchBarDelegate, UITableViewData
         
         let nib = UINib(nibName: "RepoDetailTableViewCell", bundle: nil)
         self.tableView.register(nib, forCellReuseIdentifier: RepoDetailTableViewCell.identifier())
+        
         
         update()
         
@@ -99,12 +96,15 @@ class HomeViewController: UIViewController, UISearchBarDelegate, UITableViewData
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
-        if segue.identifier == RepoDetialViewController.identifier() {
+        if segue.identifier == "RepoDetialViewController" {
+            let selectedIndex = tableView.indexPathForSelectedRow!.row
+            let selectedRepo = self.repositoryList[selectedIndex]
             
+        
             if let destinationController = segue.destination as? RepoDetialViewController {
                 
                 destinationController.transitioningDelegate = self
-                
+                destinationController.repo = selectedRepo
             }
             
         }

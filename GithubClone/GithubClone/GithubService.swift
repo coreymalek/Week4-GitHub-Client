@@ -14,6 +14,9 @@ let kBaseUrlString = "https://github.com/login/oauth"
 
 typealias GitHubAuthCompletion = (Bool) -> ()
 typealias RepositoriesCompletion = ([Repository]?) -> ()
+typealias UserSearchCompletion = ([User]?) -> ()
+
+
 
 enum GitHubOAuthError: Error {
     case extractingCode(String)
@@ -52,6 +55,56 @@ class GithubService {
             urlComponents.queryItems = [tokenQueryItem]
         }
     }
+    
+    
+    
+    func searchUsersWith(searchTerm: String, completion: @escaping UserSearchCompletion) {
+        
+        self.urlComponents.path = "/search/users"
+        
+        let searchQueryItem = URLQueryItem(name: "q", value: searchTerm)
+        
+        self.urlComponents.queryItems?.append(searchQueryItem)
+        
+        guard let url = self.urlComponents.url else { completion(nil); return }
+        
+        self.session.dataTask(with: url, completionHandler: {(data, response, error) in
+        
+            if error != nil { completion(nil); return }
+            
+            guard let data = data else { completion(nil); return }
+            
+            do {
+                
+            
+                if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as?  [String: Any], let items = json["items"] as? [[String: Any]] {
+                    
+                    var searchedUsers = [User]()
+                    
+                    for userJson in items {
+                        
+                        if let user = User(json: userJson) {
+                            searchedUsers.append(user)
+                            
+                        }
+                        
+                    }
+                    
+                    OperationQueue.main.addOperation {
+                        completion(searchedUsers)
+                    }
+                    
+                }
+                
+            } catch {
+                print(error)
+            }
+            
+        }).resume()
+    }
+    
+    
+    
     
     
     func fetchRepos(completion: @escaping RepositoriesCompletion) {
